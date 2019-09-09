@@ -1,0 +1,12 @@
+/var/www/webroot/lsyncd/var/log/*.log {
+    weekly
+    missingok
+    rotate 4
+    compress
+    notifempty
+    create 0640 jelastic apache
+    sharedscripts
+    postrotate
+        sh /var/www/webroot/lsyncd/init.sh stop && sh /var/www/webroot/lsyncd/init.sh start
+    endscript
+}
