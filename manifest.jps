@@ -3,7 +3,7 @@ logo: images/icon.png
 homepage: http://docs.jelastic.com/file-synchronization
 
 version: '1.1'
-baseUrl: https://raw.githubusercontent.com/jelastic-jps/file-sync/master/
+baseUrl: https://raw.githubusercontent.com/layershift/file-sync/master/
 
 targetNodes:
   nodeType:
@@ -118,6 +118,7 @@ actions:
       sed -i "s|_INSTALL_DIRECTORY|${this.lsyncdPath}lsyncd|g" ${this.lsyncdPath}lsyncd/etc/lsyncd.conf
       sed -i "s|_USER|admin|g" ${this.lsyncdPath}lsyncd/etc/rsyncd.secrets
       sed -i "s|_INSTALL_DIRECTORY|${this.lsyncdPath}lsyncd/|g" ${this.lsyncdPath}lsyncd/init.sh
+      wget https://raw.githubusercontent.com/layershift/file-sync/master/scripts/lsyncd.logrotate -O /etc/logrotate.d/lsyncd
   - cmd [${this.nodeId}]: |-
       cd ${this.lsyncdPath}lsyncd/
       chmod 600 etc/rsyncd.pass etc/rsyncd.secrets
