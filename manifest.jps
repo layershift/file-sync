@@ -118,7 +118,12 @@ actions:
       sed -i "s|_INSTALL_DIRECTORY|${this.lsyncdPath}lsyncd|g" ${this.lsyncdPath}lsyncd/etc/lsyncd.conf
       sed -i "s|_USER|admin|g" ${this.lsyncdPath}lsyncd/etc/rsyncd.secrets
       sed -i "s|_INSTALL_DIRECTORY|${this.lsyncdPath}lsyncd/|g" ${this.lsyncdPath}lsyncd/init.sh
+  - cmd [${this.nodeId}]: |-
       wget https://raw.githubusercontent.com/layershift/file-sync/master/scripts/lsyncd.logrotate -O /etc/logrotate.d/lsyncd
+      group=$(grep 700 /etc/group | cut -d ":" -f 1);sed -i "s/create 0640 jelastic apache/create 0640 jelastic $group/g" /etc/logrotate.d/lsyncd
+      sed -i "s#/var/www/webroot/lsyncd/var/log/#${this.lsyncdPath}lsyncd/var/log#g" /etc/logrotate.d/lsyncd
+      sed -i "s#/var/www/webroot/lsyncd/init.sh#${this.lsyncdPath}lsyncd/init.sh#g" /etc/logrotate.d/lsyncd
+    user: root
   - cmd [${this.nodeId}]: |-
       cd ${this.lsyncdPath}lsyncd/
       chmod 600 etc/rsyncd.pass etc/rsyncd.secrets
@@ -138,3 +143,4 @@ actions:
 onUninstall: removeLsyncd
 
 success: Lsyncd is installed on your environment.<br>You can find config files and logs at the webroot directory for compute nodes or data directory for storage.
+
